@@ -22,7 +22,7 @@ const Card: React.FC<CardProps> = ({ cardNumber }) => {
 
   return (
     <div className="card" onClick={handleClick}>
-      Card {cardNumber} {isClicked && 'Clicked'}
+      {cardNumber} {isClicked && 'Clicked'}
     </div>
   );
 };

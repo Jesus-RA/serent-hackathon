@@ -20,12 +20,25 @@ interface Props {
 }
 
 const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
-  const cards = Array.from({ length: x * y }, (_, i) => i + 1);
+  const cards = shuffle(fillWithPairs(x * y));
+
+  // Create a function that given a total number of cards, will return an array of pairs of cards
+  function fillWithPairs(cardsTotal: number) {
+    const pairs = [];
+    for (let i = 1; i <= cardsTotal / 2; i++) {
+      pairs.push(i, i);
+    }
+    return pairs;
+  }
+
+  function shuffle(array: number[]) {
+    return array.toSorted((a, b) => Math.random() - 0.5);
+  }
 
   return (
     <div className="gamescreen" style={{ gridTemplateColumns: `repeat(${x}, 1fr)` }}>
-      {cards.map((card) => (
-        <Card key={card} cardNumber={card} />
+      {cards.map((card, idx) => (
+        <Card key={idx} cardNumber={card} />
       ))}
       <button onClick={onEndGame}>End Game</button>
     </div>
