@@ -25,17 +25,15 @@ interface CardState {
 }
 
 const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
-  const [MATCHES, setMatches] = useState(new Set());
+  const [MATCHES, setMatches] = useState(new Set<number>());
   const [tries, setTries] = useState(0);
   const [gameScreenClasses, setGameScreenClasses] = useState('gamescreen show-all');
-  const [cardClass, setCardClass] = useState('');
 
   setTimeout(() => {
     setGameScreenClasses('gamescreen');
-    setCardClass('hide-card');
   }, 2000);
 
-  const [cards, setCards] = useState<number[]>(shuffle(fillWithPairs(x * y)));
+  const [cards] = useState<number[]>(shuffle(fillWithPairs(x * y)));
   const [cardsState, setCardsState] = useState<{ [key: number]: boolean }>({});
 
   const [firstCard, setFirstCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
@@ -64,14 +62,18 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
       setTimeout(() => {
         // Add card to MATCHES if it matches
         if(firstCard.cardNumber === cardNumber && firstCard.cardIndex !== cardIndex){
-          setMatches(new Set([...MATCHES, cardNumber]));
+          //setMatches(new Set<number>([...MATCHES, cardNumber]));
+          setMatches(prevState => prevState.add(cardNumber));
           resetSelectedCards();
         } else {// Otherwise, flip the cards back over
           setTimeout(() => {
             setTries(tries + 1);
 
+            console.log({firstCard})
             // Flip the cards back over
-            updateCardState(firstCard.cardIndex);
+            if(firstCard.cardIndex !== null){
+              updateCardState(firstCard.cardIndex);
+            }
             updateCardState(cardIndex);
 
             resetSelectedCards();
@@ -118,7 +120,7 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   }
 
   function shuffle(array: number[]) {
-    return array.toSorted((a, b) => Math.random() - 0.5);
+    return array.sort(() => Math.random() - 0.5);
   }
 
   return (
@@ -133,7 +135,6 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
           cardIndex={idx}
           isClicked={cardsState[idx]}
           onCardClick={handleCardClick}
-          className={cardClass}
           />
       ))}
       <button onClick={onEndGame}>End Game</button>
