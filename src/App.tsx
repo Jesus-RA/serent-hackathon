@@ -12,7 +12,8 @@ import EndScreen from './components/EndScreen'; // import the EndScreen componen
 */
 
 function App() {
-  const [gameState, setGameState] = useState('splash'); // state to manage the game state
+  //const [gameState, setGameState] = useState('splash'); // state to manage the game state
+  const [gameState, setGameState] = useState('play'); // state to manage the game state
 
   const startGame = () => {
     setGameState('play'); // set gameState to 'play' when game starts
@@ -29,7 +30,7 @@ function App() {
   return (
     <div className="App">
       {gameState === 'splash' && <SplashScreen onStartGame={startGame} />}
-      {gameState === 'play' && <GameScreen x={4} y={4} onEndGame={endGame} />}
+      {gameState === 'play' && <GameScreen x={2} y={2} onEndGame={endGame} />}
       {gameState === 'end' && <EndScreen onRestartGame={restartGame} />}
     </div>
   );

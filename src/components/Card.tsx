@@ -10,14 +10,17 @@ interface CardProps {
     we can flip the cards back over.
   */
   cardNumber: number;
-
+  cardIndex: number;
+  isClicked: boolean;
+  onCardClick: (cardNumber: number, cardIndex: number) => void; // Prop function to handle card click
 }
 
-const Card: React.FC<CardProps> = ({ cardNumber }) => {
-  const [isClicked, setIsClicked] = useState(false); // state to manage if card has been clicked
+const Card: React.FC<CardProps> = ({ cardNumber, cardIndex, isClicked, onCardClick }) => {
+  //const [isClicked, setIsClicked] = useState(false); // state to manage if card has been clicked
 
   const handleClick = () => {
-    setIsClicked(true); // set isClicked to true when card is clicked
+    //setIsClicked(!isClicked); // set isClicked to true when card is clicked
+    onCardClick(cardNumber, cardIndex);
   };
 
   return (

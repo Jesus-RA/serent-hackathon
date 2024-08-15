@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/GameScreen.css';
 import Card from './Card'; // import the Card component
 
@@ -19,8 +19,83 @@ interface Props {
   onEndGame: () => void; // Prop function to end the game
 }
 
+interface CardState {
+  cardNumber: number | null;
+  cardIndex: number | null;
+}
+
 const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
-  const cards = shuffle(fillWithPairs(x * y));
+  const [MATCHES, setMatches] = useState(new Set());
+
+  const [cards, setCards] = useState<number[]>(shuffle(fillWithPairs(x * y)));
+  const [cardsState, setCardsState] = useState<{ [key: number]: boolean }>({});
+  
+  //const firstCard : CardState = { cardNumber: null, cardIndex: null };
+  const [firstCard, setFirstCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
+  const [secondCard, setSecondCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
+
+  function handleCardClick(cardNumber: number, cardIndex: number){
+    // Do nothing if same card is clicked more than
+    if(firstCard.cardIndex === cardIndex){
+      return;
+    }
+    
+    //Processing two cards, cannot process more thant two cards at a time
+    if(firstCard.cardIndex !== null && secondCard.cardIndex !== null){
+      return;
+    }
+
+    updateCardState(cardIndex);
+
+    // If the first card is not set, set it
+    if(firstCard.cardNumber === null){
+      setFirstCard({ cardNumber, cardIndex });
+    } else {// Otherwise check if match
+      setSecondCard({cardNumber, cardIndex});
+
+      // Copilot says that a setTimeout is necessary to access the updated state
+      setTimeout(() => {
+        // Add card to MATCHES if it matches
+        if(firstCard.cardNumber === cardNumber && firstCard.cardIndex !== cardIndex){
+          setMatches(new Set([...MATCHES, cardNumber]));
+          resetSelectedCards();
+        } else {// Otherwise, flip the cards back over
+          setTimeout(() => {
+            // Flip the cards back over
+            updateCardState(firstCard.cardIndex);
+            updateCardState(cardIndex);
+
+            resetSelectedCards();
+          }, 1000);
+        }
+      }, 0)
+    }
+
+  }
+
+  // Check if all cards are matched
+  useEffect(() => {
+    if(MATCHES.size === (x * y)/2){
+      alert("Congratulations! You have won the game!");
+      resetSelectedCards();
+      setCardsState({});
+      setMatches(new Set());
+      onEndGame();
+    }
+  }, [MATCHES]);
+
+  function resetSelectedCards(){
+    setFirstCard({ cardNumber: null, cardIndex: null });
+    setSecondCard({ cardNumber: null, cardIndex: null });
+  }
+
+  function updateCardState(cardIndex: number){
+    // Handling cards state
+    setCardsState( prevState => ({
+      ...prevState,
+      [cardIndex]: !prevState[cardIndex],
+    }));
+  }
 
   // Create a function that given a total number of cards, will return an array of pairs of cards
   function fillWithPairs(cardsTotal: number) {
@@ -38,7 +113,13 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   return (
     <div className="gamescreen" style={{ gridTemplateColumns: `repeat(${x}, 1fr)` }}>
       {cards.map((card, idx) => (
-        <Card key={idx} cardNumber={card} />
+        <Card
+          key={idx}
+          cardNumber={card}
+          cardIndex={idx}
+          isClicked={cardsState[idx]}
+          onCardClick={handleCardClick}
+          />
       ))}
       <button onClick={onEndGame}>End Game</button>
     </div>
