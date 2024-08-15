@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Card.css';
 
 interface CardProps {
@@ -16,16 +16,26 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ cardNumber, cardIndex, isClicked, onCardClick }) => {
-  //const [isClicked, setIsClicked] = useState(false); // state to manage if card has been clicked
-
   const handleClick = () => {
-    //setIsClicked(!isClicked); // set isClicked to true when card is clicked
     onCardClick(cardNumber, cardIndex);
   };
 
+  const [cardClass, setCardClass] = useState('card');
+
+  useEffect(() => {
+    if(isClicked){
+      setCardClass('card reveal-card');
+    }else if(cardClass.includes('reveal-card')){
+      setCardClass('card hide-card');
+      setTimeout(() => {
+        setCardClass('card');
+      }, 200);
+    }
+  }, [isClicked]);
+
   return (
-    <div className="card" onClick={handleClick}>
-      {cardNumber} {isClicked && 'Clicked'}
+    <div className={cardClass} onClick={handleClick}>
+      <p>{cardNumber}</p>
     </div>
   );
 };

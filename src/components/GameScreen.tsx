@@ -26,11 +26,18 @@ interface CardState {
 
 const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   const [MATCHES, setMatches] = useState(new Set());
+  const [tries, setTries] = useState(0);
+  const [gameScreenClasses, setGameScreenClasses] = useState('gamescreen show-all');
+  const [cardClass, setCardClass] = useState('');
+
+  setTimeout(() => {
+    setGameScreenClasses('gamescreen');
+    setCardClass('hide-card');
+  }, 2000);
 
   const [cards, setCards] = useState<number[]>(shuffle(fillWithPairs(x * y)));
   const [cardsState, setCardsState] = useState<{ [key: number]: boolean }>({});
-  
-  //const firstCard : CardState = { cardNumber: null, cardIndex: null };
+
   const [firstCard, setFirstCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
   const [secondCard, setSecondCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
 
@@ -61,6 +68,8 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
           resetSelectedCards();
         } else {// Otherwise, flip the cards back over
           setTimeout(() => {
+            setTries(tries + 1);
+
             // Flip the cards back over
             updateCardState(firstCard.cardIndex);
             updateCardState(cardIndex);
@@ -75,13 +84,15 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
 
   // Check if all cards are matched
   useEffect(() => {
-    if(MATCHES.size === (x * y)/2){
-      alert("Congratulations! You have won the game!");
-      resetSelectedCards();
-      setCardsState({});
-      setMatches(new Set());
-      onEndGame();
-    }
+    setTimeout(() => {
+      if(MATCHES.size === (x * y)/2){
+        alert("Congratulations! You have won the game!");
+        resetSelectedCards();
+        setCardsState({});
+        setMatches(new Set());
+        onEndGame();
+      }
+    }, 500);
   }, [MATCHES]);
 
   function resetSelectedCards(){
@@ -111,7 +122,10 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   }
 
   return (
-    <div className="gamescreen" style={{ gridTemplateColumns: `repeat(${x}, 1fr)` }}>
+    <>
+    <span>Tries: {tries}</span>
+
+    <div className={gameScreenClasses} style={{ gridTemplateColumns: `repeat(${x}, 1fr)` }}>
       {cards.map((card, idx) => (
         <Card
           key={idx}
@@ -119,10 +133,12 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
           cardIndex={idx}
           isClicked={cardsState[idx]}
           onCardClick={handleCardClick}
+          className={cardClass}
           />
       ))}
       <button onClick={onEndGame}>End Game</button>
     </div>
+    </>
   );
 };
 

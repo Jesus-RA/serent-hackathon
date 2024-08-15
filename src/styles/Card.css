@@ -13,4 +13,69 @@
   align-items: center; /* Center vertically */
   font-size: 1.2rem; /* Larger text */
   margin: 1rem; /* Space around each card */
+
+  background-color: #3DC2EC;
+
+  && p {
+    opacity: 0;
+  }
+}
+
+.reveal-card{
+  animation: reveal-card 0.5s;
+
+  && p {
+    opacity: 1;
+    animation: fade-in 0.5s ease-in;
+  }
+}
+
+.hide-card{
+  animation: hide-card 0.5s;
+
+  && p {
+    opacity: 1;
+    animation: fade-out 0.5s ease-in;
+  }
+}
+
+@keyframes reveal-card{
+  from {
+    transform: rotateY(180deg);
+  }
+
+  to{
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes hide-card{
+  from {
+    transform: rotateY(0deg);
+  }
+
+  to{
+    transform: rotateY(180deg);
+  }
+  
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  } 
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  } 
 }

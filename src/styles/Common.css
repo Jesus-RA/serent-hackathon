@@ -4,8 +4,9 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f8f9fa;
-  color: #343a40;
+  background-color: #402E7A;
+  background-color: #4B70F5;
+  color: #fff;
   font-size: 1.5rem;
 }
 
@@ -22,7 +23,7 @@ button {
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   color: #fff;
-  background-color: #007bff;
+  background-color: #3DC2EC;
   border: none;
   border-radius: 5px;
   cursor: pointer;
