@@ -27,11 +27,11 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <section className="App">
       {gameState === 'splash' && <SplashScreen onStartGame={startGame} />}
       {gameState === 'play' && <GameScreen x={3} y={2} onEndGame={endGame} />}
       {gameState === 'end' && <EndScreen onRestartGame={restartGame} />}
-    </div>
+    </section>
   );
 }
 

@@ -1,8 +1,9 @@
 .gamescreen {
   display: grid;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  grid-auto-rows: minmax(150px, 1fr);
+  gap: 10px;
 }
 
 .show-all .card p{

@@ -127,7 +127,7 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
     <>
     <span>Tries: {tries}</span>
 
-    <div className={gameScreenClasses} style={{ gridTemplateColumns: `repeat(${x}, 1fr)` }}>
+    <div className={gameScreenClasses} style={{ gridTemplateColumns: `repeat(${x}, minmax(100px, 1fr))` }}>
       {cards.map((card, idx) => (
         <Card
           key={idx}
