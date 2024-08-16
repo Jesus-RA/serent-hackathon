@@ -40,6 +40,11 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   const [secondCard, setSecondCard] = useState<CardState>({ cardNumber: null, cardIndex: null });
 
   function handleCardClick(cardNumber: number, cardIndex: number){
+    // Do nothing if card is already matched
+    if(MATCHES.has(cardNumber)){
+      return;
+    }
+
     // Do nothing if same card is clicked more than
     if(firstCard.cardIndex === cardIndex){
       return;
@@ -87,7 +92,7 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
   // Check if all cards are matched
   useEffect(() => {
     setTimeout(() => {
-      if(MATCHES.size === (x * y)/2){
+      if(MATCHES.size === Math.floor((x * y)/2)){
         alert("Congratulations! You have won the game!");
         resetSelectedCards();
         setCardsState({});
@@ -95,7 +100,7 @@ const GameScreen: React.FC<Props> = ({ x, y, onEndGame }) => {
         onEndGame();
       }
     }, 500);
-  }, [MATCHES]);
+  }, [MATCHES.size]);
 
   function resetSelectedCards(){
     setFirstCard({ cardNumber: null, cardIndex: null });
