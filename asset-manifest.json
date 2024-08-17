@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/serent-hackathon/static/css/main.a29fa35c.chunk.css",
-    "main.js": "/serent-hackathon/static/js/main.297b3a4d.chunk.js",
-    "main.js.map": "/serent-hackathon/static/js/main.297b3a4d.chunk.js.map",
+    "main.js": "/serent-hackathon/static/js/main.af2cc1ec.chunk.js",
+    "main.js.map": "/serent-hackathon/static/js/main.af2cc1ec.chunk.js.map",
     "runtime-main.js": "/serent-hackathon/static/js/runtime-main.719e9b07.js",
     "runtime-main.js.map": "/serent-hackathon/static/js/runtime-main.719e9b07.js.map",
     "static/js/2.c73b2fb8.chunk.js": "/serent-hackathon/static/js/2.c73b2fb8.chunk.js",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.719e9b07.js",
     "static/js/2.c73b2fb8.chunk.js",
     "static/css/main.a29fa35c.chunk.css",
-    "static/js/main.297b3a4d.chunk.js"
+    "static/js/main.af2cc1ec.chunk.js"
   ]
 }
